@@ -647,12 +647,16 @@ const MagicSpoon = {
             records: [],
             details: {},
         };
-
-    // TODO: Support new transactions
+        // TODO: Support new transactions
+        // Loading full transaction history with limit 200 (max)
         const initialWalk = async (results) => {
             let newResults;
             if (results === null) {
-                newResults = await Server.effects().forAccount(publicKey).limit(200).order('desc').call();
+                newResults = await Server.effects()
+                    .forAccount(publicKey)
+                    .limit(200)
+                    .order('desc')
+                    .call();
             } else {
                 newResults = await results.next();
             }
@@ -662,6 +666,8 @@ const MagicSpoon = {
                 onUpdate();
                 initialWalk(newResults);
             }
+            // console.log(newResults);
+            // console.log(history);
         };
 
         initialWalk(null);
@@ -676,14 +682,15 @@ const MagicSpoon = {
                     fetchTarget = i;
                 }
             }
-
             if (fetchTarget === null) {
                 setTimeout(detailWalk, 1000);
             } else {
                 const record = history.records[fetchTarget];
-
+                
                 const operation = await record.operation();
                 const transaction = await operation.transaction();
+                // console.log(operation);
+                // console.log(transaction);
                 record.category = record.type;
                 history.details[record.id] = Object.assign(operation, transaction, record);
                 onUpdate();
@@ -691,7 +698,6 @@ const MagicSpoon = {
             }
         };
         detailWalk();
-
 
         return history;
     },
