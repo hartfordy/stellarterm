@@ -512,6 +512,9 @@ export default function Send(driver) {
         },
 
         setHomeDomain: async () => {
+            if (this.account.signers.length > 1) {
+                await this.account.refresh();
+            }
             const homeDomainExists = this.account.home_domain === 'stellarterm.com';
             if (homeDomainExists) {
                 return;
@@ -520,10 +523,6 @@ export default function Send(driver) {
             const homeDomain = {
                 homeDomain: 'stellarterm.com',
             };
-
-            if (this.account.signers.length > 1) {
-                this.account.refresh();
-            }
 
             try {
                 // Setting homeDomain for user
