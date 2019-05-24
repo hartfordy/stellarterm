@@ -43,7 +43,7 @@ export default class GlobalModal extends React.Component {
                 {isSuccess ? (
                     <React.Fragment>
                         <div className="Footer_transaction">
-                            <img src={images['icon-circle-success']} alt="preloader" /> Transaction success!
+                            <img src={images['icon-circle-success']} alt="preloader" /> Transaction submitted
                         </div>
                         <div className="Action_buttons">
                             <button
@@ -62,9 +62,9 @@ export default class GlobalModal extends React.Component {
                                 <React.Fragment>
                                     <img src={images['icon-circle-preloader-gif']} alt="preloader" />{' '}
                                     {waitingForHorizon ? (
-                                        <span>Waiting for Horizon answer.</span>
+                                        <span>Submitting transaction...</span>
                                     ) : (
-                                        <span>Waiting for transaction sign on Ledger.</span>
+                                        <span>Please confirm transaction on your Ledger</span>
                                     )}
                                 </React.Fragment>
                             ) : null}
@@ -108,7 +108,7 @@ export default class GlobalModal extends React.Component {
                 let errorMsg = error.message;
                 switch (errorMsg) {
                 case 'Failed to sign with Ledger device: U2F TIMEOUT':
-                    errorMsg = 'Time out to sign by Ledger.';
+                    errorMsg = 'Timed out when signing with Ledger. Please try again';
                     break;
                 case 'Transaction approval request was rejected':
                     d.modal.handlers.cancel(error.message);
